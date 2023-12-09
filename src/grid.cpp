@@ -3,6 +3,7 @@
 #include <iostream>
 #include <raylib.h>
 #include "config.h"
+#include "utility.h"
 Grid::Grid(int rowsIn, int colsIn) : rows(rowsIn), cols(colsIn)
 {
     for (int r = 0; r < rows; r++)
@@ -17,11 +18,12 @@ Grid::Grid(int rowsIn, int colsIn) : rows(rowsIn), cols(colsIn)
     }
     drawOffset.x = config.garbage;
     drawOffset.y = config.garbage;
+    flagCount = 0;
 }
 // Note that position is in grid cells.
-Cell Grid::getCell(Position position)
+Cell *Grid::getCell(Position position)
 {
-    return doubleArrayGrid[position.y][position.x];
+    return &doubleArrayGrid[position.y][position.x];
 }
 void Grid::setCell(Position position, Cell newValue)
 {
@@ -37,6 +39,10 @@ void Grid::drawGrid()
             if (doubleArrayGrid[r][c].value == MINE && doubleArrayGrid[r][c].discovered)
             {
                 DrawRectangle(currentPosition.x, currentPosition.y, config.cellSize, config.cellSize, config.cellColors[MINE]);
+            }
+            else if (doubleArrayGrid[r][c].isFlagged)
+            {
+                DrawRectangle(currentPosition.x, currentPosition.y, config.cellSize, config.cellSize, RED);
             }
             else if (doubleArrayGrid[r][c].discovered)
             {
@@ -90,13 +96,45 @@ Cell *Grid::getCellByPositionInArea(Position position)
         {
             for (int c = 0; c < cols; c++)
             {
-                if ((position.y > doubleArrayGrid[r][c].screenLocation.y && (r >= rows - 1 ? true : position.y <= doubleArrayGrid[r + 1][c].screenLocation.y)) && (position.x > doubleArrayGrid[r][c].screenLocation.x && (c >= rows - 1 ? true : position.x <= doubleArrayGrid[r][c + 1].screenLocation.x)))
+                if (utility::isInBetween(position.x, doubleArrayGrid[r][c].screenLocation.x, doubleArrayGrid[r][c].screenLocation.x + 30) &&
+                    utility::isInBetween(position.y, doubleArrayGrid[r][c].screenLocation.y, doubleArrayGrid[r][c].screenLocation.y + 30))
                 {
                     return &(doubleArrayGrid[r][c]);
                 }
             }
         }
-        return &(doubleArrayGrid[rows - 1][cols - 1]);
+        return NULL;
     }
-    return &(doubleArrayGrid[0][0]);
+    return NULL;
+}
+std::vector<Cell *> Grid::getSurroundingZeros(Position position)
+{
+    std::vector<Position> array;
+    array.push_back(position);
+    internalRecursive(position, &array);
+
+    std::vector<Cell *> toRet;
+    for (int i = 0; i < array.size(); i++)
+    {
+        toRet.push_back(getCell(array[i]));
+    }
+    return toRet;
+}
+void Grid::internalRecursive(Position working, std::vector<Position> *retrievalArray)
+{
+    int directions[][2] = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
+    for (int i = 0; i < (sizeof(directions) / sizeof(directions[0])); i++)
+    {
+        int newX = working.x + directions[i][0];
+        int newY = working.y + directions[i][1];
+        if (utility::isValidCell(newX, newY, cols, rows) && utility::indexOf(*retrievalArray, {newX, newY}) == -1 && getCell(working)->value == ZERO)
+        {
+            retrievalArray->push_back({newX, newY});
+            internalRecursive({newX, newY}, retrievalArray);
+        }
+        else
+        {
+            continue;
+        }
+    }
 }

@@ -8,6 +8,8 @@ struct Config
     int cellSize;
     int cellSpacing;
     int mineCount;
+    int rows;
+    int cols;
     Font font;
     std::map<CellValues, Color> cellColors;
     int garbage;

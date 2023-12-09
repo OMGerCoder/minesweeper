@@ -1,12 +1,9 @@
 #include "utility.h"
-template <typename T> int indexOf(std::vector<T> vector, T element) {
-    for (size_t i = 0; i < vector.size(); i++)
-    {
-        if (element == vector[i])
-        {
-            return i;
-        }
-        
-    }
-    return -1;
+bool utility::isValidCell(int x, int y, int cols, int rows)
+{
+    return y >= 0 && y < rows && x >= 0 && x < cols;
+}
+bool utility::isInBetween(int input, int lowerBound, int upperBound)
+{
+    return input > lowerBound && input < upperBound;
 }

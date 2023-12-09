@@ -3,10 +3,13 @@
 #include "position.h"
 class MinesweeperGrid : public Grid
 {
+private:
 protected:
     void randomlyPlaceMines();
 
 public:
     MinesweeperGrid(int rows, int cols);
-    std::vector<Position> mineLocations;
+    void reset(int rows, int cols);
+
+    std::vector<Position> mineLocations = {};
 };

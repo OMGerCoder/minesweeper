@@ -56,3 +56,24 @@ void MinesweeperGrid::randomlyPlaceMines()
         }
     }
 }
+void MinesweeperGrid::reset(int rows, int cols)
+{
+    this->rows = rows;
+    this->rows = cols;
+    flagCount = 0;
+    mineLocations = {};
+    doubleArrayGrid = std::vector<std::vector<Cell>>();
+    for (int r = 0; r < rows; r++)
+    {
+        std::vector<Cell> newRow;
+        for (int c = 0; c < cols; c++)
+        {
+
+            newRow.push_back(Cell(NIL, this, {c, r}));
+        }
+        doubleArrayGrid.push_back(newRow);
+    }
+    drawOffset.x = config.garbage;
+    drawOffset.y = config.garbage;
+    randomlyPlaceMines();
+}

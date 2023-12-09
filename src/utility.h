@@ -1,3 +1,20 @@
 #pragma once
 #include <vector>
-template <typename T> int indexOf(std::vector<T> vector, T element);
+
+namespace utility
+{
+    template <typename T>
+    int indexOf(std::vector<T> vector, T element)
+    {
+        for (size_t i = 0; i < vector.size(); i++)
+        {
+            if (element == vector[i])
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    bool isValidCell(int x, int y, int cols, int rows);
+    bool isInBetween(int input, int lowerBound, int upperBound);
+}

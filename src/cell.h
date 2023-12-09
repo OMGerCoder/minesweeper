@@ -1,6 +1,7 @@
 #pragma once
 #include "position.h"
 #include "grid.h"
+
 class Grid;
 enum CellValues
 {
@@ -27,4 +28,5 @@ public:
     Position loc;
     void onClick(int mouseX, int mouseY);
     Grid *parent;
+    bool isFlagged;
 };
