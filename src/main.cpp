@@ -36,7 +36,7 @@ bool DetermineWin(MinesweeperGrid grid)
 int main()
 {
     int timeTakenToWin;
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Template");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Minesweeper");
     SetTargetFPS(60);
     SetExitKey(KEY_DELETE);
     config.font = LoadFontEx("build/resources/main.otf", config.cellSize, 0, 250);
