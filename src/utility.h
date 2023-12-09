@@ -6,7 +6,7 @@ namespace utility
     template <typename T>
     int indexOf(std::vector<T> vector, T element)
     {
-        for (size_t i = 0; i < vector.size(); i++)
+        for (int i = 0; i < vector.size(); i++)
         {
             if (element == vector[i])
             {
