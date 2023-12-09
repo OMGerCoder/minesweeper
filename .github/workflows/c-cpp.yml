@@ -14,11 +14,11 @@ jobs:
     steps:
     
     - name: list files
-      working-directory: ./
+      working-directory: /home/runner/work/minesweeper/minesweeper
       run: |
         pwd
     - name: make
-      working-directory: ../
+      working-directory: /home/runner/work/minesweeper/minesweeper
       run: |
         make --version  # Display make version
         make  # Run make
