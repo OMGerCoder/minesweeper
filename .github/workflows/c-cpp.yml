@@ -17,6 +17,9 @@ jobs:
       working-directory: /home/runner/work/minesweeper/minesweeper
       run: |
         pwd
+    - name: Check Permissions
+      working-directory: /home/runner/work/minesweeper/minesweeper
+      run: ls -l Makefile
     - name: make
       working-directory: /home/runner/work/minesweeper/minesweeper
       run: |
