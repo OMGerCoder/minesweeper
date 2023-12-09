@@ -15,4 +15,7 @@ jobs:
     
     - name: make
       working-directory: ./
-      run: make
+      run: |
+        ls -la  # List files in the current directory
+        make --version  # Display make version
+        make  # Run make
