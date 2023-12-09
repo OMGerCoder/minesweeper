@@ -1,19 +1,22 @@
-TARGET ?= linux
+CXX=g++
+CXXFLAGS=-O2 -Wall -Wno-missing-braces -I ./include/
+LDFLAGS=-L ./lib/ -lraylib -lopengl32 -lgdi32 -lwinmm
 
-all: $(TARGET)
+SRCDIR=./src
+BINDIR=./build
 
-windows:
-	mkdir -p build
-	g++ ./src/*.cpp -o ./build/Game.exe -O2 -Wall -Wno-missing-braces -I ./include/ -L ./lib/ -lraylib -lopengl32 -lgdi32 -lwinmm
+CXXFILES=$(wildcard $(SRCDIR)/*.cpp)
+OBJFILES=$(patsubst $(SRCDIR)/%.cpp,$(BINDIR)/%.o,$(CXXFILES))
 
-linux:
-	mkdir -p build
-	g++ ./src/*.cpp -o ./build/Game -O2 -Wall -Wno-missing-braces -I ./include/ -L ./lib/ -lm -lpthread -ldl -lrt -lX11 -lraylib
-windows_dbg:
-	mkdir -p build
-	g++ ./src/*.cpp -o ./build/Game.exe -Wall -Wno-missing-braces -I ./include/ -L ./lib/ -lraylib -lopengl32 -lgdi32 -lwinmm -g
 
-linux_dbg:
-	mkdir -p build
-	g++ ./src/*.cpp -o ./build/Game -Wall -Wno-missing-braces -I ./include/ -L ./lib/ -lraylib -lm -lpthread -ldl -lrt -lX11 -g
-.PHONY: all windows linux windows_dbg linux_dbg
+all: $(BINDIR)/Game.exe
+
+$(BINDIR)/Game.exe: $(OBJFILES)
+	$(CXX) $^ -o $@ $(LDFLAGS)
+
+$(BINDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CXX) -c $< -o $@ $(CXXFLAGS)
+run:
+	$(BINDIR)/Game.exe
+clean:
+	rm -f $(BINDIR)/*.o $(BINDIR)/Game.exe
