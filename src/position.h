@@ -1,5 +1,10 @@
 #pragma once
-typedef struct {
+struct Position
+{
     int x;
     int y;
-} Position;
+    bool operator<(const Position &other) const
+    {
+        return x < other.x || (x == other.x && y < other.y);
+    }
+};

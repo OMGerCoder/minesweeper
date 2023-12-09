@@ -1,15 +1,20 @@
 #pragma once
 #include <vector>
 #include "position.h"
+#include "cell.h"
+class Cell;
 class Grid
 {
 protected:
+    std::vector<std::vector<Cell>> doubleArrayGrid;
+
+public:
     int rows;
     int cols;
-    std::vector<std::vector<int>> doubleArrayGrid;
-public:
     Grid(int rows, int cols);
-    int getValue(Position position);
-    void setValue(Position position, int newValue);
-    void drawGrid(Position position, int cellSize, int spacing);
+    Cell getCell(Position position);
+    void setCell(Position position, Cell newCell);
+    void drawGrid();
+    Position drawOffset;
+    Cell *getCellByPositionInArea(Position position);
 };
