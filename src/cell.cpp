@@ -25,6 +25,7 @@ void Cell::onClick(int mouseX, int mouseY)
     {
         UnloadFont(config.font);
         CloseWindow();
+        std::cout << "You took the L" << std::endl;
         exit(0);
     }
     else if (value == ZERO)
@@ -34,5 +35,5 @@ void Cell::onClick(int mouseX, int mouseY)
         {
             cellsToEdit[i]->discovered = true;
         }
-        }
+    }
 }

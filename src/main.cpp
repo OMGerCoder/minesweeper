@@ -35,6 +35,7 @@ bool DetermineWin(MinesweeperGrid grid)
 }
 int main()
 {
+    int timeTakenToWin;
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Template");
     SetTargetFPS(60);
     SetExitKey(KEY_DELETE);
@@ -50,7 +51,7 @@ int main()
     {
         if (gameState == MENU)
         {
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && framesElapsedSinceModeChange > 120)
+            if (IsKeyPressed(KEY_ENTER) && framesElapsedSinceModeChange > 120)
             {
                 grid.reset(config.rows, config.cols);
                 framesElapsedSinceModeChange = 0;
@@ -64,7 +65,7 @@ int main()
             DrawText("Use right click to place a flag.", 40, 290, 30, WHITE);
             DrawText("If you discover a mine, you lose.", 40, 320, 30, WHITE);
             DrawText("You win once everywhere except the mines is clear.", 40, 350, 30, WHITE);
-            DrawText("Click anywhere to start", 40, 410, 60, WHITE);
+            DrawText("Press ENTER to start", 40, 410, 60, WHITE);
             DrawText("Release version 1.0", 40, SCREEN_HEIGHT - 90, 30, WHITE);
             DrawText("Press delete to exit", 40, SCREEN_HEIGHT - 60, 30, WHITE);
             if (utility::isInBetween(framesElapsedSinceModeChange, 60, 120))
@@ -88,6 +89,7 @@ int main()
                     if (hasWon)
                     {
                         gameState = WIN;
+                        timeTakenToWin = framesElapsedSinceModeChange / 60;
                         framesElapsedSinceModeChange = 0;
                         continue;
                     }
@@ -117,11 +119,12 @@ int main()
             grid.drawOffset = {0, 0};
             grid.drawGrid();
             DrawText(TextFormat("F: %i", config.mineCount - grid.flagCount), 735, 40, 60, RED);
+            DrawText(TextFormat("T: %i", framesElapsedSinceModeChange / 60), 735, 140, 60, WHITE);
             EndDrawing();
         }
         else if (gameState == WIN)
         {
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            if (IsKeyPressed(KEY_ENTER))
             {
                 grid.reset(config.rows, config.cols);
                 framesElapsedSinceModeChange = 0;
@@ -130,7 +133,8 @@ int main()
             BeginDrawing();
             ClearBackground({26, 14, 130, 255});
             DrawText("#1 victory royale", 40, 40, 90, WHITE);
-            DrawText("Click anywhere to play again", 40, 190, 60, WHITE);
+            DrawText(TextFormat("%i seconds", timeTakenToWin), 40, 150, 60, WHITE);
+            DrawText("Press ENTER to play again", 40, 230, 60, WHITE);
             EndDrawing();
         }
         framesElapsedSinceModeChange++;
