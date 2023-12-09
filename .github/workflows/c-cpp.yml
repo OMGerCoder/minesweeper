@@ -12,16 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
     
-    - name: list files
-      working-directory: /home/runner/work/minesweeper/minesweeper
-      run: |
-        pwd
-    - name: Check Permissions
-      working-directory: /home/runner/work/minesweeper/minesweeper
-      run: ls -l Makefile
     - name: make
-      working-directory: /home/runner/work/minesweeper/minesweeper
-      run: |
-        make --version  # Display make version
-        make  # Run make
+      run: make
