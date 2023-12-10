@@ -23,10 +23,9 @@ void Cell::onClick(int mouseX, int mouseY)
     }
     else if (value == MINE)
     {
-        UnloadFont(config.font);
-        CloseWindow();
-        std::cout << "You took the L" << std::endl;
-        exit(0);
+        config.gameState = LOSS;
+        parent->reset(config.rows, config.cols);
+        config.framesElapsedSinceModeChange = 0;
     }
     else if (value == ZERO)
     {

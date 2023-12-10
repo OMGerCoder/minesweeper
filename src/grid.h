@@ -10,6 +10,7 @@ private:
 
 protected:
     std::vector<std::vector<Cell>> doubleArrayGrid;
+    void randomlyPlaceMines();
 
 public:
     int rows;
@@ -22,4 +23,6 @@ public:
     Cell *getCellByPositionInArea(Position position);
     std::vector<Cell *> getSurroundingZeros(Position position);
     int flagCount;
+    void reset(int rows, int cols);
+    std::vector<Position> mineLocations = {};
 };

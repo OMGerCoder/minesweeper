@@ -2,23 +2,15 @@
 #include <raylib.h>
 #include "grid.h"
 #include "config.h"
-#include "minesweeperGrid.h"
 #include "utility.h"
+
 const int SCREEN_WIDTH = 1042;
 const int SCREEN_HEIGHT = 695;
-enum GameState
-{
-    MENU = 0,
-    GAME = 1,
-    WIN = 2
-};
-GameState gameState = MENU;
-int framesElapsedSinceModeChange = 0;
 bool hasWon;
 void FirstFrame_menu()
 {
 }
-bool DetermineWin(MinesweeperGrid grid)
+bool DetermineWin(Grid grid)
 {
     bool won = true;
     for (int y = 0; y < grid.rows; y++)
@@ -39,23 +31,23 @@ int main()
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Minesweeper");
     SetTargetFPS(60);
     SetExitKey(KEY_DELETE);
-    config.font = LoadFontEx("build/resources/main.otf", config.cellSize, 0, 250);
+    config.font = LoadFontEx("resources/main.otf", config.cellSize, 0, 250);
     config.mineCount = 30;
     config.cellSize = 30;
     config.cellSpacing = 5;
     config.rows = 20;
     config.cols = 20;
-    MinesweeperGrid grid = MinesweeperGrid(config.rows, config.cols);
+    Grid grid = Grid(config.rows, config.cols);
     // TODO: Make menu screen
     while (!WindowShouldClose())
     {
-        if (gameState == MENU)
+        if (config.gameState == MENU)
         {
-            if (IsKeyPressed(KEY_ENTER) && framesElapsedSinceModeChange > 120)
+            if (IsKeyPressed(KEY_ENTER) && config.framesElapsedSinceModeChange > 120)
             {
                 grid.reset(config.rows, config.cols);
-                framesElapsedSinceModeChange = 0;
-                gameState = GAME;
+                config.framesElapsedSinceModeChange = 0;
+                config.gameState = GAME;
             }
             BeginDrawing();
             ClearBackground({26, 14, 130, 255});
@@ -68,17 +60,17 @@ int main()
             DrawText("Press ENTER to start", 40, 410, 60, WHITE);
             DrawText("Release version 1.0", 40, SCREEN_HEIGHT - 90, 30, WHITE);
             DrawText("Press delete to exit", 40, SCREEN_HEIGHT - 60, 30, WHITE);
-            if (utility::isInBetween(framesElapsedSinceModeChange, 60, 120))
+            if (utility::isInBetween(config.framesElapsedSinceModeChange, 60, 120))
             {
-                DrawRectangle(0, 160 + (SCREEN_HEIGHT - 160) * 1 / 60 * (framesElapsedSinceModeChange - 60), SCREEN_WIDTH, SCREEN_HEIGHT, {26, 14, 130, 255});
+                DrawRectangle(0, 160 + (SCREEN_HEIGHT - 160) * 1 / 60 * (config.framesElapsedSinceModeChange - 60), SCREEN_WIDTH, SCREEN_HEIGHT, {26, 14, 130, 255});
             }
-            else if (framesElapsedSinceModeChange <= 60)
+            else if (config.framesElapsedSinceModeChange <= 60)
             {
                 DrawRectangle(0, 160, SCREEN_WIDTH, SCREEN_HEIGHT, {26, 14, 130, 255});
             }
             EndDrawing();
         }
-        else if (gameState == GAME)
+        else if (config.gameState == GAME)
         {
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
@@ -88,9 +80,9 @@ int main()
                     hasWon = DetermineWin(grid);
                     if (hasWon)
                     {
-                        gameState = WIN;
-                        timeTakenToWin = framesElapsedSinceModeChange / 60;
-                        framesElapsedSinceModeChange = 0;
+                        config.gameState = WIN;
+                        timeTakenToWin = config.framesElapsedSinceModeChange / 60;
+                        config.framesElapsedSinceModeChange = 0;
                         continue;
                     }
                 }
@@ -119,16 +111,16 @@ int main()
             grid.drawOffset = {0, 0};
             grid.drawGrid();
             DrawText(TextFormat("F: %i", config.mineCount - grid.flagCount), 735, 40, 60, RED);
-            DrawText(TextFormat("T: %i", framesElapsedSinceModeChange / 60), 735, 140, 60, WHITE);
+            DrawText(TextFormat("T: %i", config.framesElapsedSinceModeChange / 60), 735, 140, 60, WHITE);
             EndDrawing();
         }
-        else if (gameState == WIN)
+        else if (config.gameState == WIN)
         {
             if (IsKeyPressed(KEY_ENTER))
             {
                 grid.reset(config.rows, config.cols);
-                framesElapsedSinceModeChange = 0;
-                gameState = GAME;
+                config.framesElapsedSinceModeChange = 0;
+                config.gameState = GAME;
             }
             BeginDrawing();
             ClearBackground({26, 14, 130, 255});
@@ -137,7 +129,19 @@ int main()
             DrawText("Press ENTER to play again", 40, 230, 60, WHITE);
             EndDrawing();
         }
-        framesElapsedSinceModeChange++;
+        else if (config.gameState == LOSS)
+        {
+            if (config.framesElapsedSinceModeChange >= 120)
+            {
+                break;
+            }
+            BeginDrawing();
+            ClearBackground({26, 14, 130, 255});
+            DrawText("You took an L", 40, 40, 90, WHITE);
+            EndDrawing();
+        }
+
+        config.framesElapsedSinceModeChange++;
     }
     UnloadFont(config.font);
     CloseWindow();

@@ -3,6 +3,13 @@
 #include <vector>
 #include <map>
 #include "grid.h"
+enum GameState
+{
+    MENU = 0,
+    GAME = 1,
+    WIN = 2,
+    LOSS = 3
+};
 struct Config
 {
     int cellSize;
@@ -13,6 +20,8 @@ struct Config
     Font font;
     std::map<CellValues, Color> cellColors;
     int garbage;
+    GameState gameState;
+    int framesElapsedSinceModeChange;
     Config();
 };
 extern struct Config config;

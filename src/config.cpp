@@ -1,7 +1,7 @@
 #include "config.h"
 #include "grid.h"
 #include <raylib.h>
-Config::Config() : cellSize(30), cellSpacing(5), mineCount(10), rows(20), cols(20), garbage(59305)
+Config::Config() : cellSize(30), cellSpacing(5), mineCount(10), rows(20), cols(20), garbage(59305), gameState(MENU), framesElapsedSinceModeChange(0)
 {
 
     cellColors.insert(std::make_pair(NIL, RAYWHITE));
