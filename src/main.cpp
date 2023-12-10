@@ -93,7 +93,7 @@ int main()
             DrawText("You win once everywhere except the mines is clear.", 40, 350, 30, WHITE);
             DrawTextEx(config.font, "Press ENTER to start", {40, 410}, 60, 0, WHITE);
             DrawText(TextFormat("Press arrows to change difficulty: %s", config.difficulty == EASY ? "Easy" : (config.difficulty == NORMAL ? "Normal" : "Hard")), 40, 500, 30, WHITE);
-            DrawText("Release version 1.0", 40, SCREEN_HEIGHT - 90, 30, WHITE);
+            DrawText("Release version 1.1", 40, SCREEN_HEIGHT - 90, 30, WHITE);
             DrawText("Press delete to exit", 40, SCREEN_HEIGHT - 60, 30, WHITE);
             if (utility::isInBetween(config.framesElapsedSinceModeChange, 60, 120))
             {
