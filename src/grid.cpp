@@ -97,8 +97,8 @@ Cell *Grid::getCellByPositionInArea(Position position)
         {
             for (int c = 0; c < cols; c++)
             {
-                if (utility::isInBetween(position.x, doubleArrayGrid[r][c].screenLocation.x, doubleArrayGrid[r][c].screenLocation.x + 30) &&
-                    utility::isInBetween(position.y, doubleArrayGrid[r][c].screenLocation.y, doubleArrayGrid[r][c].screenLocation.y + 30))
+                if (utility::isInBetween(position.x, doubleArrayGrid[r][c].screenLocation.x, doubleArrayGrid[r][c].screenLocation.x + config.cellSize) &&
+                    utility::isInBetween(position.y, doubleArrayGrid[r][c].screenLocation.y, doubleArrayGrid[r][c].screenLocation.y + config.cellSize))
                 {
                     return &(doubleArrayGrid[r][c]);
                 }
@@ -192,7 +192,7 @@ void Grid::randomlyPlaceMines()
 void Grid::reset(int rows, int cols)
 {
     this->rows = rows;
-    this->rows = cols;
+    this->cols = cols;
     flagCount = 0;
     mineLocations = {};
     doubleArrayGrid = std::vector<std::vector<Cell>>();

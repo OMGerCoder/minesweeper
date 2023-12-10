@@ -10,6 +10,12 @@ enum GameState
     WIN = 2,
     LOSS = 3
 };
+enum Difficulty
+{
+    EASY = 0,
+    NORMAL = 1,
+    HARD = 2
+};
 struct Config
 {
     int cellSize;
@@ -22,6 +28,7 @@ struct Config
     int garbage;
     GameState gameState;
     int framesElapsedSinceModeChange;
+    Difficulty difficulty;
     Config();
 };
 extern struct Config config;

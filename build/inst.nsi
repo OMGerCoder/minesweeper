@@ -1,7 +1,7 @@
 !include MUI2.nsh
 !include "nsDialogs.nsh"
 Name "Minesweeper"
-OutFile "Minesweeper_setup.exe"
+OutFile "dist\Minesweeper_setup.exe"
 InstallDir $DESKTOP\Minesweeper
 RequestExecutionLevel user
 !define MUI_FINISHPAGE_RUN_TEXT "Run Minesweeper"

@@ -2,4 +2,4 @@
 build/Game.exe
 build/*.o
 build/Game_debug.exe
-build/Minesweeper_setup.exe
+build/dist

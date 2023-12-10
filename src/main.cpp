@@ -4,8 +4,8 @@
 #include "config.h"
 #include "utility.h"
 
-const int SCREEN_WIDTH = 1042;
-const int SCREEN_HEIGHT = 695;
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 720;
 bool hasWon;
 void FirstFrame_menu()
 {
@@ -31,13 +31,13 @@ int main()
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Minesweeper");
     SetTargetFPS(60);
     SetExitKey(KEY_DELETE);
-    config.font = LoadFontEx("resources/main.otf", config.cellSize, 0, 250);
-    config.mineCount = 30;
-    config.cellSize = 30;
-    config.cellSpacing = 5;
-    config.rows = 20;
-    config.cols = 20;
-    Grid grid = Grid(config.rows, config.cols);
+    config.font = LoadFontEx("resources/main.otf", 120, 0, 250);
+    config.mineCount = 40;
+    config.cellSize = 34;
+    config.cellSpacing = 6;
+    config.rows = 18;
+    config.cols = 18;
+    Grid grid = Grid(100, 100);
     // TODO: Make menu screen
     while (!WindowShouldClose())
     {
@@ -45,19 +45,54 @@ int main()
         {
             if (IsKeyPressed(KEY_ENTER) && config.framesElapsedSinceModeChange > 120)
             {
+                if (config.difficulty == EASY)
+                {
+                    config.rows = 10, config.cols = 10, config.mineCount = 10, config.cellSize = 62, config.cellSpacing = 10;
+                }
+                else if (config.difficulty == NORMAL)
+                {
+                    config.rows = 18, config.cols = 18, config.mineCount = 40, config.cellSize = 34, config.cellSpacing = 6;
+                }
+                else if (config.difficulty == HARD)
+                {
+                    config.rows = 24, config.cols = 24, config.mineCount = 99, config.cellSize = 26, config.cellSpacing = 4;
+                }
                 grid.reset(config.rows, config.cols);
                 config.framesElapsedSinceModeChange = 0;
                 config.gameState = GAME;
             }
+            else if (IsKeyPressed(KEY_LEFT))
+            {
+                if (config.difficulty == EASY)
+                {
+                    config.difficulty = HARD;
+                }
+                else
+                {
+                    config.difficulty = (Difficulty)((int)config.difficulty - 1);
+                }
+            }
+            else if (IsKeyPressed(KEY_RIGHT))
+            {
+                if (config.difficulty == HARD)
+                {
+                    config.difficulty = EASY;
+                }
+                else
+                {
+                    config.difficulty = (Difficulty)((int)config.difficulty + 1);
+                }
+            }
             BeginDrawing();
             ClearBackground({26, 14, 130, 255});
-            DrawText("Minesweeper", 40, 40, 120, WHITE);
+            DrawTextEx(config.font, "Minesweeper", {40, 40}, 120, 0, WHITE);
             DrawText("Another simple raylib game by omger.", 40, 200, 30, WHITE);
             DrawText("Use left click to dig.", 40, 260, 30, WHITE);
             DrawText("Use right click to place a flag.", 40, 290, 30, WHITE);
             DrawText("If you discover a mine, you lose.", 40, 320, 30, WHITE);
             DrawText("You win once everywhere except the mines is clear.", 40, 350, 30, WHITE);
-            DrawText("Press ENTER to start", 40, 410, 60, WHITE);
+            DrawTextEx(config.font, "Press ENTER to start", {40, 410}, 60, 0, WHITE);
+            DrawText(TextFormat("Press arrows to change difficulty: %s", config.difficulty == EASY ? "Easy" : (config.difficulty == NORMAL ? "Normal" : "Hard")), 40, 500, 30, WHITE);
             DrawText("Release version 1.0", 40, SCREEN_HEIGHT - 90, 30, WHITE);
             DrawText("Press delete to exit", 40, SCREEN_HEIGHT - 60, 30, WHITE);
             if (utility::isInBetween(config.framesElapsedSinceModeChange, 60, 120))
@@ -110,8 +145,8 @@ int main()
             ClearBackground({26, 14, 130, 255});
             grid.drawOffset = {0, 0};
             grid.drawGrid();
-            DrawText(TextFormat("F: %i", config.mineCount - grid.flagCount), 735, 40, 60, RED);
-            DrawText(TextFormat("T: %i", config.framesElapsedSinceModeChange / 60), 735, 140, 60, WHITE);
+            DrawText(TextFormat("F: %i", config.mineCount - grid.flagCount), 760, 40, 60, RED);
+            DrawText(TextFormat("T: %i", config.framesElapsedSinceModeChange / 60), 760, 140, 60, WHITE);
             EndDrawing();
         }
         else if (config.gameState == WIN)
@@ -124,7 +159,7 @@ int main()
             }
             BeginDrawing();
             ClearBackground({26, 14, 130, 255});
-            DrawText("#1 victory royale", 40, 40, 90, WHITE);
+            DrawTextEx(config.font, "#1 victory royale", {40, 40}, 90, 0, WHITE);
             DrawText(TextFormat("%i seconds", timeTakenToWin), 40, 150, 60, WHITE);
             DrawText("Press ENTER to play again", 40, 230, 60, WHITE);
             EndDrawing();
@@ -137,7 +172,8 @@ int main()
             }
             BeginDrawing();
             ClearBackground({26, 14, 130, 255});
-            DrawText("You took an L", 40, 40, 90, WHITE);
+            DrawTextEx(config.font, "You took an L", {40, 40}, 90, 0, WHITE);
+            DrawText(TextFormat("I will close the game in %i frames to be annoying", 120 - config.framesElapsedSinceModeChange), 40, 150, 45, WHITE);
             EndDrawing();
         }
 
