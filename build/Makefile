@@ -6,7 +6,7 @@ installer: Game.exe $(RESOURCEFILES) inst.nsi
 	makensis ./inst.nsi
 portable: Game.exe $(RESOURCEFILES)
 	mkdir -p dist
-	"C:\Program Files\7-Zip\7z.exe" a -r ./dist/portable.zip ./Game.exe ./resources
+	"C:\Program Files\7-Zip\7z.exe" a -r ./dist/Minesweeper_portable.zip ./Game.exe ./resources
 clean:
 	rm -rf dist
 .PHONY: all installer portable clean
