@@ -1,7 +1,7 @@
 CXX=g++
 CXXFLAGS_RELEASE=-O2 -Wall -Wno-missing-braces -I ./include/
 CXXFLAGS_DEBUG=-Wall -Wno-missing-braces -g -DDEBUG -I ./include/
-LDFLAGS=-L ./lib/ -mwindows -lraylib -lopengl32 -lgdi32 -lwinmm -static-libgcc -static-libstdc++
+LDFLAGS=-L ./lib/ -mwindows -lraylib -lopengl32 -lgdi32 -lwinmm -static
 
 SRCDIR=./src
 BINDIR=./build
